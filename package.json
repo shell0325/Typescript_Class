@@ -1,0 +1,24 @@
+{
+  "name": "typescript_class",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shell0325/Typescript_Class.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shell0325/Typescript_Class/issues"
+  },
+  "homepage": "https://github.com/shell0325/Typescript_Class#readme",
+  "devDependencies": {
+    "@types/node": "^16.9.1",
+    "tslint": "^6.1.3",
+    "typescript": "^4.4.3"
+  }
+}
