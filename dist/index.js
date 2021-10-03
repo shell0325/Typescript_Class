@@ -4,14 +4,14 @@ class ObjectWrapper {
      * 引数のオブジェクトのコピーを this._objに設定
      */
     constructor(_obj) {
-        this._obj = _obj;
+        this._obj = Object.assign({}, _obj);
     }
     /**
      * this._objのコピーを返却
      * @return Object
      */
     get obj() {
-        return this._obj;
+        return Object.assign({}, this._obj);
     }
     /**
      * this._obj[key] に valを設定。keyがthis._objに存在しない場合、falseを返却
@@ -19,14 +19,11 @@ class ObjectWrapper {
      * @param val オブジェクトの値
      */
     set(key, val) {
-        if (this._obj[key] === undefined) {
-            return false;
-        }
-        else if (this._obj[key] !== undefined) {
+        if (this._obj[key] !== undefined) {
             this._obj[key] = val;
             return true;
         }
-        return true;
+        return false;
     }
     /**
      * 指定したキーの値のコピーを返却
@@ -40,10 +37,13 @@ class ObjectWrapper {
      * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
      */
     findKeys(val) {
-        const formatArray = Object.keys(this._obj).map((value) => ({
+        const objectData = Object.keys(this._obj);
+        const formatArray = objectData.map((value) => ({
             keys: value,
             number: this._obj[value],
         }));
+        // console.log(this._obj);
+        // console.log(formatArray);
         const returnArray = formatArray.filter((data) => val.includes(data.number));
         return returnArray;
     }
