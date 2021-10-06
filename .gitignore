@@ -30,11 +30,12 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+dist/
+dist/index.js
 # TypeScript v1 declaration files
 typings/
 # TypeScript cache
 *.tsbuildinfo
-/dist
 # Optional npm cache directory
 .npm
 # Optional eslint cache

@@ -1,10 +1,4 @@
-type Obj01 = {
-  a: string;
-  b: string;
-};
-
-type K = keyof { a: string; b: string };
-class ObjectWrapper<T extends Obj01> {
+class ObjectWrapper<T extends Object, K extends keyof T> {
   private _obj: T;
 
   /***
@@ -27,7 +21,7 @@ class ObjectWrapper<T extends Obj01> {
    * @param key オブジェクトのキー
    * @param val オブジェクトの値
    */
-  set(key: K, val: string): boolean {
+  set(key: K, val: T[K]): boolean {
     if (this._obj[key] !== undefined) {
       this._obj[key] = val;
       return true;
@@ -40,24 +34,24 @@ class ObjectWrapper<T extends Obj01> {
    * 指定のキーが存在しない場合 undefinedを返却
    * @param key オブジェクトのキー
    */
-  get(key: K) {
-    return this._obj[key];
-  }
+  // get(key: K) {
+  //   return this._obj[key];
+  // }
 
   /**
    * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
    */
-  findKeys(val: string) {
-    const objectData = Object.keys(this._obj);
-    const formatArray = objectData.map((value) => ({
-      keys: value,
-      number: this._obj[value],
-    }));
-    // console.log(this._obj);
-    // console.log(formatArray);
-    const returnArray = formatArray.filter((data) => val.includes(data.number));
-    return returnArray;
-  }
+  // findKeys(val: string) {
+  //   const objectData = Object.keys(this._obj);
+  //   const formatArray = objectData.map((value) => ({
+  //     keys: value,
+  //     number: this._obj[value],
+  //   }));
+  //   // console.log(this._obj);
+  //   // console.log(formatArray);
+  //   const returnArray = formatArray.filter((data) => val.includes(data.number));
+  //   return returnArray;
+  // }
 }
 
 /**
@@ -83,24 +77,24 @@ if (
   console.error('NG: set(key, val)');
 }
 
-if (wrappedObj1.get('b') === '04' && wrappedObj1.get('c') === undefined) {
-  console.log('OK: get(key)');
-} else {
-  console.error('NG: get(key)');
-}
+// if (wrappedObj1.get('b') === '04' && wrappedObj1.get('c') === undefined) {
+//   console.log('OK: get(key)');
+// } else {
+//   console.error('NG: get(key)');
+// }
 
-const obj2 = { a: '01', b: '02', bb: '02', bbb: '02' };
-const wrappedObj2 = new ObjectWrapper(obj2);
-const keys = wrappedObj2.findKeys('02');
-const formatKeys = keys.map((data) => data.keys);
-if (
-  wrappedObj2.findKeys('03').length === 0 &&
-  formatKeys.includes('b') &&
-  formatKeys.includes('bb') &&
-  formatKeys.includes('bbb') &&
-  keys.length === 3
-) {
-  console.log('OK: findKeys(val)');
-} else {
-  console.error('NG: findKeys(val)');
-}
+// const obj2 = { a: '01', b: '02', bb: '02', bbb: '02' };
+// const wrappedObj2 = new ObjectWrapper(obj2);
+// const keys = wrappedObj2.findKeys('02');
+// const formatKeys = keys.map((data) => data.keys);
+// if (
+//   wrappedObj2.findKeys('03').length === 0 &&
+//   formatKeys.includes('b') &&
+//   formatKeys.includes('bb') &&
+//   formatKeys.includes('bbb') &&
+//   keys.length === 3
+// ) {
+//   console.log('OK: findKeys(val)');
+// } else {
+//   console.error('NG: findKeys(val)');
+// }
