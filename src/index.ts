@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 class ObjectWrapper<T extends Object, K extends keyof T> {
   private _obj: T;
 
@@ -22,11 +23,8 @@ class ObjectWrapper<T extends Object, K extends keyof T> {
    * @param val オブジェクトの値
    */
   set(key: K, val: T[K]): boolean {
-    if (this._obj[key] !== undefined) {
-      this._obj[key] = val;
-      return true;
-    }
-    return false;
+    this._obj[key] = val;
+    return true;
   }
 
   /**
@@ -34,24 +32,23 @@ class ObjectWrapper<T extends Object, K extends keyof T> {
    * 指定のキーが存在しない場合 undefinedを返却
    * @param key オブジェクトのキー
    */
-  // get(key: K) {
-  //   return this._obj[key];
-  // }
+  get(key: K) {
+    return this._obj[key];
+  }
 
   /**
    * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
    */
-  // findKeys(val: string) {
-  //   const objectData = Object.keys(this._obj);
-  //   const formatArray = objectData.map((value) => ({
-  //     keys: value,
-  //     number: this._obj[value],
-  //   }));
-  //   // console.log(this._obj);
-  //   // console.log(formatArray);
-  //   const returnArray = formatArray.filter((data) => val.includes(data.number));
-  //   return returnArray;
-  // }
+  findKeys(val: T[K]): (keyof T)[] {
+    const keys = R.keys(this._obj);
+    const array: (keyof T)[] = [];
+    for (let i = 0; i < keys.length; i++) {
+      if (this._obj[keys[i]] === val) {
+        array.push(keys[i]);
+      }
+    }
+    return array;
+  }
 }
 
 /**
@@ -68,7 +65,7 @@ if (wrappedObj1.obj.a === '01') {
 }
 
 if (
-  wrappedObj1.set('c', '03') === false &&
+  // wrappedObj1.set('c', '03') === false &&
   wrappedObj1.set('b', '04') === true &&
   wrappedObj1.obj.b === '04'
 ) {
@@ -77,24 +74,26 @@ if (
   console.error('NG: set(key, val)');
 }
 
-// if (wrappedObj1.get('b') === '04' && wrappedObj1.get('c') === undefined) {
-//   console.log('OK: get(key)');
-// } else {
-//   console.error('NG: get(key)');
-// }
+if (
+  wrappedObj1.get('b') === '04'
+  // && wrappedObj1.get('c') === undefined
+) {
+  console.log('OK: get(key)');
+} else {
+  console.error('NG: get(key)');
+}
 
-// const obj2 = { a: '01', b: '02', bb: '02', bbb: '02' };
-// const wrappedObj2 = new ObjectWrapper(obj2);
-// const keys = wrappedObj2.findKeys('02');
-// const formatKeys = keys.map((data) => data.keys);
-// if (
-//   wrappedObj2.findKeys('03').length === 0 &&
-//   formatKeys.includes('b') &&
-//   formatKeys.includes('bb') &&
-//   formatKeys.includes('bbb') &&
-//   keys.length === 3
-// ) {
-//   console.log('OK: findKeys(val)');
-// } else {
-//   console.error('NG: findKeys(val)');
-// }
+const obj2 = { a: '01', b: '02', bb: '02', bbb: '02' };
+const wrappedObj2 = new ObjectWrapper(obj2);
+const keys = wrappedObj2.findKeys('02');
+if (
+  wrappedObj2.findKeys('03').length === 0 &&
+  keys.includes('b') &&
+  keys.includes('bb') &&
+  keys.includes('bbb') &&
+  keys.length === 3
+) {
+  console.log('OK: findKeys(val)');
+} else {
+  console.error('NG: findKeys(val)');
+}
