@@ -41,13 +41,7 @@ class ObjectWrapper<T extends Object, K extends keyof T> {
    */
   findKeys(val: T[K]): (keyof T)[] {
     const keys = R.keys(this._obj);
-    const array: (keyof T)[] = [];
-    for (let i = 0; i < keys.length; i++) {
-      if (this._obj[keys[i]] === val) {
-        array.push(keys[i]);
-      }
-    }
-    return array;
+    return keys.filter((key) => this.obj[key] === val);
   }
 }
 
